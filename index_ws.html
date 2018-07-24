@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!-- A websocket client using ws
+    launch the server with node socket_ws_server.js
+    then open this page on localhost:port.
+    A client socket will be created and the server will
+    log the new connection.
+-->
+
+<html>
+
+<head>
+  <meta charSet="UTF-8">
+  <title>Websocket ws Test</title>
+</head>
+
+<body>
+
+    <script>
+       // const WebSocket = require('ws');
+       console.log("ready to open websocket");
+
+        const ws = new WebSocket('ws://localhost:8080');
+        ws.binaryType = 'arraybuffer';
+        console.log(ws);
+
+        ws.addEventListener('open', function(event) {
+            console.log("socket open");
+          ws.send('hello server ');
+        });
+
+        ws.addEventListener('close', function(event) {
+            console.log("Connection closed by server ", ws);
+        });
+
+ //       ws.on('message', function incoming(data, flags) {
+        ws.addEventListener('message', function(event) {
+          // flags.binary will be set if a binary data is received.
+          // flags.masked will be set if the data was masked.
+          var myObj;
+          try {
+            myObj = JSON.parse(event.data);
+            }
+        catch(e) {
+          console.log("message from server " + typeof event.data + " " + event.data);
+            }
+          if(myObj)
+            console.log("message from server JSON " + event.data);
+        });
+     </script>
+
+</body>
+
+</html>

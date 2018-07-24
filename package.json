@@ -1,0 +1,14 @@
+{
+  "name": "whs-websockets",
+  "version": "0.0.1",
+  "description": "Experiment with websockets",
+  "main": "socket_ws_server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Loran Kary",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^2.0.0"
+  }
+}

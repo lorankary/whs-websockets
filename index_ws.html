@@ -23,34 +23,51 @@
 
         // listen for the socket open event
         ws.addEventListener('open', function(event) {
-            addTextNode("socket open");
-            ws.send('hello server ');   // send a plain text message to the server
+            addTextNode("connected to websocket server " + ws.url);
+            // ws.send('hello server ');   // send a plain text message to the server
         });
         // listen for the socket closed event
         ws.addEventListener('close', function(event) {
-            addTextNode("Connection closed by server", ws);
+            addTextNode("Connection closed by server");
         });
 
         //  listen for messages from the server
         ws.addEventListener('message', function(event) {
             // flags.binary will be set if a binary data is received.
             // flags.masked will be set if the data was masked.
-            var myObj;
+            let msg = null;
             try {
                 // see if the message is JSON
-                myObj = JSON.parse(event.data);
+                msg = JSON.parse(event.data);
                 }
             catch(e) {
-                // not JSON
-                addTextNode("message from server " + typeof event.data + " " + event.data);
+                // not JSON must be plain text
+                addTextNode("plain text message  " + typeof event.data + " " + event.data);
                 }
-          if(myObj) // JSON
-            addTextNode("message from server JSON " + event.data);
-            ;
+            if(msg) { // JSON
+                let from = "client number " + msg.from;
+                if(msg.from === "server") {
+                    if(!this.clientNumber) {
+                        this.clientNumber = msg.to; // our client number
+                        // we didn't yet know our clientNumber so this must be
+                        // the initial message from the server upon connection.
+                        // Send a greeting to all other clients
+                        ws.send(JSON.stringify({
+                            from: this.clientNumber,
+                            to: "broadcast",
+                            text: "Greetings to everyone!"
+                        }));
+                    }
+                    from = msg.from;    // server, not client
+                }
+                addTextNode("message from " + from + " -- " + msg.text);
+            }
+
         });
 
+        // display messages in the body of the window
         function addTextNode(text){
-            var p = document.createElement('p');
+            let p = document.createElement('p');
             p.appendChild(document.createTextNode(text));
             document.body.appendChild(p);
         }

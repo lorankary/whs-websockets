@@ -16,36 +16,44 @@
 <body>
 
     <script>
-       // const WebSocket = require('ws');
-       console.log("ready to open websocket");
-
+        // create a websocket and connnect to the given server
+        // at the given port
         const ws = new WebSocket('ws://localhost:8080');
         ws.binaryType = 'arraybuffer';
-        console.log(ws);
 
+        // listen for the socket open event
         ws.addEventListener('open', function(event) {
-            console.log("socket open");
-          ws.send('hello server ');
+            addTextNode("socket open");
+            ws.send('hello server ');   // send a plain text message to the server
         });
-
+        // listen for the socket closed event
         ws.addEventListener('close', function(event) {
-            console.log("Connection closed by server ", ws);
+            addTextNode("Connection closed by server", ws);
         });
 
- //       ws.on('message', function incoming(data, flags) {
+        //  listen for messages from the server
         ws.addEventListener('message', function(event) {
-          // flags.binary will be set if a binary data is received.
-          // flags.masked will be set if the data was masked.
-          var myObj;
-          try {
-            myObj = JSON.parse(event.data);
-            }
-        catch(e) {
-          console.log("message from server " + typeof event.data + " " + event.data);
-            }
-          if(myObj)
-            console.log("message from server JSON " + event.data);
+            // flags.binary will be set if a binary data is received.
+            // flags.masked will be set if the data was masked.
+            var myObj;
+            try {
+                // see if the message is JSON
+                myObj = JSON.parse(event.data);
+                }
+            catch(e) {
+                // not JSON
+                addTextNode("message from server " + typeof event.data + " " + event.data);
+                }
+          if(myObj) // JSON
+            addTextNode("message from server JSON " + event.data);
+            ;
         });
+
+        function addTextNode(text){
+            var p = document.createElement('p');
+            p.appendChild(document.createTextNode(text));
+            document.body.appendChild(p);
+        }
      </script>
 
 </body>

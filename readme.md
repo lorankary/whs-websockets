@@ -1,10 +1,10 @@
 # Woodside High School websockets demonstration
 
-A demonstration of websockets using the 'ws' node package
+A demonstration of websockets using the **'ws' node package**
 
 ### Instructions
 
-Clone this repo to a system that has node and npm installed.
+Clone this repo to a system that has **node** and **npm** installed.
 
 In a terminal or command prompt window, change directory to the folder containing the cloned repo.
 

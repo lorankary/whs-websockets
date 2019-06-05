@@ -9,6 +9,6 @@
   "author": "Loran Kary",
   "license": "MIT",
   "dependencies": {
-    "ws": "^2.0.0"
+    "ws": "3.3.1"
   }
 }
